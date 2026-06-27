@@ -11,8 +11,7 @@ A Superhuman-style Next.js workspace for Gmail + Google Calendar workflows using
 - Webhook ingestion endpoint for realtime updates (works with ngrok)
 - Postgres-backed workflow event feed
 - Keyboard shortcuts:
-  - `/` focus search
-  - `Ctrl/Cmd + Enter` send composed email
+  - `/` focus Gmail search
 
 ## Tech stack
 

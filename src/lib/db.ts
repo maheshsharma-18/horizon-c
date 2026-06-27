@@ -2,7 +2,6 @@ import { Pool } from "pg";
 import type { WorkflowEvent } from "@/lib/types";
 
 declare global {
-  // eslint-disable-next-line no-var
   var __horizonPool: Pool | undefined;
 }
 

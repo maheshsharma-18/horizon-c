@@ -58,11 +58,6 @@ export function Dashboard({ initialEvents }: Props) {
         event.preventDefault();
         searchInputRef.current?.focus();
       }
-
-      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
-        event.preventDefault();
-        void sendNow();
-      }
     }
 
     window.addEventListener("keydown", onKeyDown);
