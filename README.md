@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Horizon C
 
-## Getting Started
+A Superhuman-style Next.js workspace for Gmail + Google Calendar workflows using Corsair-compatible integration APIs and PostgreSQL event logging.
 
-First, run the development server:
+## Features
+
+- Gmail search endpoint + inbox preview UI
+- Email draft + send flows
+- Google Calendar invite creation flow
+- Agent chat endpoint for natural-language task execution (MCP style)
+- Webhook ingestion endpoint for realtime updates (works with ngrok)
+- Postgres-backed workflow event feed
+- Keyboard shortcuts:
+  - `/` focus search
+  - `Ctrl/Cmd + Enter` send composed email
+
+## Tech stack
+
+- Next.js (App Router, TypeScript)
+- PostgreSQL (`pg`)
+- Zod for request validation
+
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy env file and fill credentials:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Set up DB schema (optional, required for persistent event feed):
+
+```bash
+psql "$DATABASE_URL" -f db/schema.sql
+```
+
+4. Start app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `DATABASE_URL`: Postgres connection string
+- `CORSAIR_API_URL`: Base URL for Corsair integration APIs
+- `CORSAIR_API_KEY`: API key used for Corsair requests
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+If Corsair env vars are missing, the app runs in mock mode for demo/testing.
 
-## Learn More
+## API routes
 
-To learn more about Next.js, take a look at the following resources:
+- `GET /api/email/search?q=...`
+- `POST /api/email/draft`
+- `POST /api/email/send`
+- `POST /api/calendar/invite`
+- `POST /api/agent/chat`
+- `POST /api/webhooks/corsair`
+- `GET /api/workflow/events`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Webhooks via ngrok (optional)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Expose your local server:
 
-## Deploy on Vercel
+```bash
+ngrok http 3000
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Then configure Corsair webhooks to point to:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`https://<your-ngrok-subdomain>/api/webhooks/corsair`
+
+## Validation
+
+```bash
+npm run lint
+npm run build
+```
